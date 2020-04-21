@@ -71,6 +71,7 @@ object S3 {
           val md = new ObjectMetadata()
           md setContentLength uploadFile.length
           md setContentType contentType
+          if (upload.contentDisposition isDefined) md setContentDisposition upload.contentDisposition.get
           upload.encodingOnS3.map(_ => "gzip") foreach md.setContentEncoding
           val cacheControl: Option[String] = (upload.maxAge, upload.cacheControl) match {
             case (maxAge: Some[Int], cacheCtrl: Some[String]) =>

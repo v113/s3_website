@@ -79,6 +79,9 @@ case class Upload(originalFile: File, uploadType: UploadType)(implicit site: Sit
       mimeType
   }
 
+  lazy val contentDisposition: Option[String] = site.config.content_disposition
+    .flatMap { _.globMatch(s3Key) }
+
   lazy val maxAge: Option[Int] =
     site.config.max_age.flatMap(
       _ fold(
